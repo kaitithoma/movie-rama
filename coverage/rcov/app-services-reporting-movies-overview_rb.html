@@ -1,0 +1,290 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang='en' xml:lang='en' xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <title>app/services/reporting/movies/overview.rb</title>
+    <link href="./assets/0.2.3/screen.css" media="all" rel="stylesheet" type="text/css" />
+    <link href="./assets/0.2.3/print.css" media="print" rel="stylesheet" type="text/css" />
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+    <script type="text/javascript" src="./assets/0.2.3/rcov.js"></script>
+  </head>
+  <body>
+    <h1>Movie-rama C0 Coverage Information - Simploco - RCov</h1>
+    <h2>app/services/reporting/movies/overview.rb</h2>
+
+    <div class="report_table_wrapper">
+      <table class='report' id='report_table'>
+        <thead>
+          <tr>
+            <th class="left_align">Name</th>
+            <th class="right_align">Total Lines</th>
+            <th class="right_align">Lines of Code</th>
+            <th class="left_align">Total Coverage</th>
+            <th class="left_align">Code Coverage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="left_align"><a href="app-services-reporting-movies-overview_rb.html">app/services/reporting/movies/overview.rb</a></td>
+            <td class='right_align'><tt>77</tt></td>
+            <td class='right_align'><tt>33</tt></td>
+            <td class="left_align"><div class="percent_graph_legend"><tt class=''>100.00%</tt></div>
+      <div class="percent_graph">
+        <div class="covered" style="width:100px"></div>
+        <div class="uncovered" style="width:0px"></div>
+      </div></td>
+            <td class="left_align"><div class="percent_graph_legend"><tt class=''>100.00%</tt></div>
+      <div class="percent_graph">
+        <div class="covered" style="width:100px"></div>
+        <div class="uncovered" style="width:0px"></div>
+      </div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Key</h3>
+
+    <div class="key"><pre><span class='marked'>Code reported as executed by Ruby looks like this...</span><span class='marked1'>and this: this line is also marked as covered.</span><span class='inferred'>Lines considered as run by rcov, but not reported by Ruby, look like this,</span><span class='inferred1'>and this: these lines were inferred by rcov (using simple heuristics).</span><span class='uncovered'>Finally, here's a line marked as not executed.</span></pre></div>
+
+    <h3>Coverage Details</h3>
+
+    <table class="details">
+      <tbody>
+        <tr class="inferred">
+          <td><pre><a name="line2">2</a> # frozen_string_literal: true</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line3">3</a> </pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line4">4</a> module Reporting</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line5">5</a>   module Movies</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line6">6</a>     class Overview</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line7">7</a>       def self.call(...)</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line8">8</a>         new(...).call</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line9">9</a>       end</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line10">10</a> </pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line11">11</a>       def initialize(args = {})</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line12">12</a>         @limit = args[:limit]</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line13">13</a>         @offset = args[:page].to_i * limit.to_i</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line14">14</a>         @sort_by = args[:sort_by]</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line15">15</a>         @sort_order = args[:sort_order]</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line16">16</a>         @user_id = args[:user_id]</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line17">17</a>       end</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line18">18</a> </pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line19">19</a>       def call</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line20">20</a>         results.map do |result|</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line21">21</a>           {</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line22">22</a>             movie: preloaded_movies[result.movie_id],</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line23">23</a>             likes_count: result.likes_count,</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line24">24</a>             hates_count: result.hates_count</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line25">25</a>           }</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line26">26</a>         end</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line27">27</a>       end</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line28">28</a> </pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line29">29</a>       private</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line30">30</a> </pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line31">31</a>       attr_reader :limit, :offset, :sort_by, :sort_order, :user_id</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line32">32</a> </pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line33">33</a>       def base_query</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line34">34</a>         AggregatedVote.select(:movie_id, :user_id, :likes_count, :hates_count)</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line35">35</a>                       .includes(:user)</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line36">36</a>                       .limit(limit)</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line37">37</a>                       .offset(offset)</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line38">38</a>       end</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line39">39</a> </pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line40">40</a>       def filter_user(query)</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line41">41</a>         return query unless user_id</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line42">42</a> </pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line43">43</a>         query.where(user_id:)</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line44">44</a>       end</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line45">45</a> </pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line46">46</a>       def order(query)</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line47">47</a>         return query unless sort_by</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line48">48</a> </pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line49">49</a>         query.order(&quot;#{sort_by} #{sort_order || &#39;DESC&#39;}&quot;)</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line50">50</a>       end</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line51">51</a> </pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line52">52</a>       def results</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line53">53</a>         @results ||= filter_user order base_query</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line54">54</a>       end</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line55">55</a> </pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line56">56</a>       def created_days_ago(created_at)</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line57">57</a>         (Time.zone.now.to_date - created_at.to_date).to_i</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line58">58</a>       end</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line59">59</a> </pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line60">60</a>       def user_hash(user)</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line61">61</a>         { id: user.id, name: &quot;#{user.firstname} #{user.lastname}&quot; }</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line62">62</a>       end</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line63">63</a> </pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line64">64</a>       def preloaded_movies</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line65">65</a>         @preloaded_movies ||= Movie.where(id: results.map(&amp;:movie_id))</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line66">66</a>                                    .includes(:user)</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line67">67</a>                                    .each_with_object({}) do |movie, hash|</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line68">68</a>                                      hash[movie.id] = {</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line69">69</a>                                        title: movie.title,</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line70">70</a>                                        description: movie.description,</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line71">71</a>                                        created_days_ago: created_days_ago(movie.created_at),</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line72">72</a>                                        user: user_hash(movie.user)</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line73">73</a>                                      }</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line74">74</a>                                    end</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line75">75</a>       end</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line76">76</a>     end</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line77">77</a>   end</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line78">78</a> end</pre></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>Generated on 2025-02-19 23:31:39 +0200 with <a href="https://github.com/fguillen/simplecov-rcov">SimpleCov-RCov 0.2.3</a></p>
+
+  </body>
+</html>
