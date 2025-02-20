@@ -40,6 +40,18 @@ gem "thruster", require: false
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
+# Use Json Web Token (JWT) for user authentication
+gem "jwt"
+
+# Encrypt/decrypt passwords for user authentication
+gem "bcrypt"
+
+# Use kaminari for pagination
+# gem "kaminari"
+
+# Use scenic for database views
+gem "scenic"
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
@@ -49,15 +61,37 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+
+  # Use faker for generating fake data through seeds file
+  gem "faker"
+
+  # Unit tests
+  gem "rspec-rails", "~> 7.0.0"
+
+  # Use factory_bot for generating fake data in tests
+  gem "factory_bot_rails"
+
+  gem "rubocop"
+
+  # Use simplecov for code coverage
+  gem "simplecov", "~> 0.22", require: false
+  gem "simplecov-lcov", "~> 0.8", require: false
+  gem "simplecov-rcov", git: "https://github.com/k0kubun/simplecov-rcov", branch: "binary-write", require: false
+  gem "rswag-specs"
+  gem "shoulda-matchers", "~> 6.0"
 end
 
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
+  # Use pry for debugging
+  gem "pry-nav"
+  gem "pry-rails"
 end
 
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
+  gem "database_cleaner-active_record"
 end
