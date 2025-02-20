@@ -15,65 +15,28 @@
           1,
           1,
           1,
-          5,
+          0,
           null,
           null,
           1,
-          5,
-          5,
-          5,
-          5,
-          5,
-          5,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
           null,
           null,
           1,
-          5,
+          0,
           null,
-          null,
-          1,
           null,
           1,
           null,
           1,
-          5,
-          null,
-          null,
-          null,
-          null,
-          null,
           null,
           1,
-          5,
-          null,
-          1,
-          null,
-          null,
-          1,
-          5,
-          null,
-          1,
-          null,
-          null,
-          1,
-          15,
-          null,
-          null,
-          1,
-          14,
-          null,
-          null,
-          1,
-          14,
-          null,
-          null,
-          1,
-          14,
-          null,
-          null,
-          14,
-          null,
-          null,
+          0,
           null,
           null,
           null,
@@ -81,9 +44,35 @@
           null,
           null,
           1,
+          0,
           null,
-          5,
-          14,
+          0,
+          null,
+          null,
+          1,
+          0,
+          null,
+          0,
+          null,
+          null,
+          1,
+          0,
+          null,
+          null,
+          1,
+          0,
+          null,
+          null,
+          1,
+          0,
+          null,
+          null,
+          1,
+          0,
+          null,
+          null,
+          0,
+          null,
           null,
           null,
           null,
@@ -92,90 +81,28 @@
           null,
           null,
           1,
-          5,
+          null,
+          0,
+          0,
           null,
           null,
-          1,
-          5,
           null,
           null,
           null,
-          null
-        ]
-      },
-      "/home/kaiti/Projects/movie-rama/app/models/user.rb": {
-        "lines": [
           null,
           null,
           1,
-          null,
-          1,
-          1,
-          1,
-          1,
-          null,
-          1,
-          null,
-          1,
-          null,
-          1,
-          null,
-          1,
-          20,
-          null,
-          20,
-          null,
-          null
-        ]
-      },
-      "/home/kaiti/Projects/movie-rama/app/models/application_record.rb": {
-        "lines": [
-          1,
-          1,
-          null
-        ]
-      },
-      "/home/kaiti/Projects/movie-rama/app/models/movie.rb": {
-        "lines": [
+          0,
           null,
           null,
           1,
-          1,
-          null,
-          1
-        ]
-      },
-      "/home/kaiti/Projects/movie-rama/app/models/like.rb": {
-        "lines": [
+          0,
           null,
           null,
           1,
-          1,
-          1,
-          null
-        ]
-      },
-      "/home/kaiti/Projects/movie-rama/app/models/hate.rb": {
-        "lines": [
+          0,
           null,
           null,
-          1,
-          1,
-          1,
-          null
-        ]
-      },
-      "/home/kaiti/Projects/movie-rama/app/models/aggregated_vote.rb": {
-        "lines": [
-          null,
-          null,
-          1,
-          1,
-          1,
-          null,
-          1,
-          null,
-          5,
           null,
           null
         ]
@@ -282,8 +209,92 @@
           0
         ],
         "branches": {}
+      },
+      "/home/kaiti/Projects/movie-rama/app/models/aggregated_vote.rb": {
+        "lines": [
+          null,
+          null,
+          0,
+          0,
+          0,
+          null,
+          0,
+          null,
+          0,
+          0,
+          0
+        ],
+        "branches": {}
+      },
+      "/home/kaiti/Projects/movie-rama/app/models/application_record.rb": {
+        "lines": [
+          0,
+          0,
+          0
+        ],
+        "branches": {}
+      },
+      "/home/kaiti/Projects/movie-rama/app/models/hate.rb": {
+        "lines": [
+          null,
+          null,
+          0,
+          0,
+          0,
+          0
+        ],
+        "branches": {}
+      },
+      "/home/kaiti/Projects/movie-rama/app/models/like.rb": {
+        "lines": [
+          null,
+          null,
+          0,
+          0,
+          0,
+          0
+        ],
+        "branches": {}
+      },
+      "/home/kaiti/Projects/movie-rama/app/models/movie.rb": {
+        "lines": [
+          null,
+          null,
+          0,
+          0,
+          null,
+          0,
+          0
+        ],
+        "branches": {}
+      },
+      "/home/kaiti/Projects/movie-rama/app/models/user.rb": {
+        "lines": [
+          null,
+          null,
+          0,
+          null,
+          0,
+          0,
+          0,
+          0,
+          null,
+          0,
+          null,
+          0,
+          null,
+          0,
+          null,
+          0,
+          0,
+          null,
+          0,
+          0,
+          0
+        ],
+        "branches": {}
       }
     },
-    "timestamp": 1740005906
+    "timestamp": 1740009952
   }
 }

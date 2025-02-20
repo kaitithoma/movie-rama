@@ -26,16 +26,16 @@
           <tr>
             <td class="left_align"><a href="app-models-user_rb.html">app/models/user.rb</a></td>
             <td class='right_align'><tt>21</tt></td>
-            <td class='right_align'><tt>11</tt></td>
-            <td class="left_align"><div class="percent_graph_legend"><tt class=''>100.00%</tt></div>
+            <td class='right_align'><tt>13</tt></td>
+            <td class="left_align"><div class="percent_graph_legend"><tt class=''>38.10%</tt></div>
       <div class="percent_graph">
-        <div class="covered" style="width:100px"></div>
-        <div class="uncovered" style="width:0px"></div>
+        <div class="covered" style="width:38px"></div>
+        <div class="uncovered" style="width:62px"></div>
       </div></td>
-            <td class="left_align"><div class="percent_graph_legend"><tt class=''>100.00%</tt></div>
+            <td class="left_align"><div class="percent_graph_legend"><tt class=''>0.00%</tt></div>
       <div class="percent_graph">
-        <div class="covered" style="width:100px"></div>
-        <div class="uncovered" style="width:0px"></div>
+        <div class="covered" style="width:0px"></div>
+        <div class="uncovered" style="width:100px"></div>
       </div></td>
           </tr>
         </tbody>
@@ -56,67 +56,67 @@
         <tr class="inferred">
           <td><pre><a name="line3">3</a> </pre></td>
         </tr>
-        <tr class="marked">
+        <tr class="uncovered">
           <td><pre><a name="line4">4</a> require &quot;bcrypt&quot;</pre></td>
         </tr>
         <tr class="inferred">
           <td><pre><a name="line5">5</a> </pre></td>
         </tr>
-        <tr class="marked">
+        <tr class="uncovered">
           <td><pre><a name="line6">6</a> class User &lt; ApplicationRecord</pre></td>
         </tr>
-        <tr class="marked">
+        <tr class="uncovered">
           <td><pre><a name="line7">7</a>   validates :firstname, presence: true</pre></td>
         </tr>
-        <tr class="marked">
+        <tr class="uncovered">
           <td><pre><a name="line8">8</a>   validates :lastname, presence: true</pre></td>
         </tr>
-        <tr class="marked">
+        <tr class="uncovered">
           <td><pre><a name="line9">9</a>   validates :email, presence: true, uniqueness: true</pre></td>
         </tr>
         <tr class="inferred">
           <td><pre><a name="line10">10</a> </pre></td>
         </tr>
-        <tr class="marked">
+        <tr class="uncovered">
           <td><pre><a name="line11">11</a>   attr_accessor :password</pre></td>
         </tr>
         <tr class="inferred">
           <td><pre><a name="line12">12</a> </pre></td>
         </tr>
-        <tr class="marked">
+        <tr class="uncovered">
           <td><pre><a name="line13">13</a>   after_validation :set_encrypted_password</pre></td>
         </tr>
         <tr class="inferred">
           <td><pre><a name="line14">14</a> </pre></td>
         </tr>
-        <tr class="marked">
+        <tr class="uncovered">
           <td><pre><a name="line15">15</a>   private</pre></td>
         </tr>
         <tr class="inferred">
           <td><pre><a name="line16">16</a> </pre></td>
         </tr>
-        <tr class="marked">
+        <tr class="uncovered">
           <td><pre><a name="line17">17</a>   def set_encrypted_password</pre></td>
         </tr>
-        <tr class="marked">
+        <tr class="uncovered">
           <td><pre><a name="line18">18</a>     return unless password</pre></td>
         </tr>
         <tr class="inferred">
           <td><pre><a name="line19">19</a> </pre></td>
         </tr>
-        <tr class="marked">
+        <tr class="uncovered">
           <td><pre><a name="line20">20</a>     self.password_digest = BCrypt::Password.create(password)</pre></td>
         </tr>
-        <tr class="inferred">
+        <tr class="uncovered">
           <td><pre><a name="line21">21</a>   end</pre></td>
         </tr>
-        <tr class="inferred">
+        <tr class="uncovered">
           <td><pre><a name="line22">22</a> end</pre></td>
         </tr>
       </tbody>
     </table>
 
-    <p>Generated on 2025-02-20 00:58:26 +0200 with <a href="https://github.com/fguillen/simplecov-rcov">SimpleCov-RCov 0.2.3</a></p>
+    <p>Generated on 2025-02-20 02:05:52 +0200 with <a href="https://github.com/fguillen/simplecov-rcov">SimpleCov-RCov 0.2.3</a></p>
 
   </body>
 </html>
