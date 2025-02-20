@@ -25,12 +25,7 @@ SimpleCov.formatters = SimpleCov::Formatter::MultiFormatter.new([
                                                                   SimpleCov::Formatter::RcovFormatter,
                                                                   SimpleCov::Formatter::LcovFormatter
                                                                 ])
-SimpleCov.start 'rails' do
-  add_filter 'vendor'
-  add_filter do |src_file|
-    File.basename(src_file.filename) == 'clockwork.rb'
-  end
-end
+SimpleCov.start 'rails'
 
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
