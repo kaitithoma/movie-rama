@@ -11,4 +11,22 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+
+  root "reporting_movies#overview"
+
+  # Authentication
+  post "signup", to: "authentication#signup"
+  post "login", to: "authentication#login"
+  post "logout", to: "authentication#logout"
+
+  # Reporting Movies
+  get "reporting_movies/overview", to: "reporting_movies#overview"
+
+  %i[ votes ].each do |model|
+    resources model, only: %i[ create destroy update ]
+  end
+
+  %i[ movies ].each do |model|
+    resources model, only: %i[ new create show update edit ]
+  end
 end
