@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
+    <meta name="csrf-token" content="<%= form_authenticity_token %>">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -13,9 +14,136 @@
     <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
     <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
 
+    <%# <link rel="icon" href="/favicon.ico" type="image/x-icon"> %>
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+    <div id="auth-buttons">
+        <button onclick="window.location.href='/signup.html'" class="btn btn-primary">Sign Up</button>
+        <button onclick="window.location.href='/login.html'" class="btn btn-success">Login</button>
+    </div>
+    <button id="logout-button" class="btn btn-danger" style="display: none;">Logout</button>
+
+    <%# <form id="login-form" class="mb-3">
+        <input type="email" id="email" class="form-control mb-2" placeholder="Email" required>
+        <input type="password" id="password" class="form-control mb-2" placeholder="Password" required>
+        <button type="submit" class="btn btn-success">Login</button>
+    </form>
+    <p id="login-status"></p>
+
+    <form id="signup-form" class="mb-3">
+        <input type="email" id="signup-email" class="form-control mb-2" placeholder="Email" required>
+        <input type="password" id="signup-password" class="form-control mb-2" placeholder="Password" required>
+        <input type="password" id="signup-password-confirm" class="form-control mb-2" placeholder="Confirm Password" required>
+        <button type="submit" class="btn btn-primary">Sign Up</button>
+    </form>
+    <p id="signup-status"></p> %>
+
+    <script>
+    //   document.getElementById('login-form').addEventListener('submit', async function(event) {
+    //       event.preventDefault();
+
+    //       const email = document.getElementById('email').value;
+    //       const password = document.getElementById('password').value;
+
+    //       try {
+    //           const response = await fetch('/login', {
+    //               method: 'POST',
+    //               headers: { 'Content-Type': 'application/json' },
+    //               body: JSON.stringify({ email, password })
+    //           });
+
+    //           const data = await response.json();
+
+    //           if (response.ok) {
+    //               localStorage.setItem('jwt', data.token);
+    //               document.getElementById('login-status').textContent = "Logged in successfully!";
+    //               loadMovies();  // Reload movies after login
+    //           } else {
+    //               document.getElementById('login-status').textContent = "Login failed!";
+    //           }
+    //       } catch (error) {
+    //           console.error('Login error:', error);
+    //       }
+    //   });
+
+    //   document.getElementById('signup-form').addEventListener('submit', async function(event) {
+    //       event.preventDefault();
+
+    //       const email = document.getElementById('signup-email').value;
+    //       const password = document.getElementById('signup-password').value;
+    //       const firstname = document.getElementById('signup-firstname').value;
+    //       const lastname = document.getElementById('signup-lastname').value;
+    //     //   const passwordConfirmation = document.getElementById('signup-password-confirm').value;
+
+    //       try {
+    //           const response = await fetch('/signup', {
+    //               method: 'POST',
+    //               headers: { 'Content-Type': 'application/json' },
+    //               body: JSON.stringify({ email, password, firstname, lastname })
+    //           });
+
+    //           const data = await response.json();
+
+    //           if (response.ok) {
+    //               localStorage.setItem('jwt', data.token);
+    //               document.getElementById('signup-status').textContent = "Signup successful! You are now logged in.";
+    //               loadMovies();  // Reload movies after signup
+    //           } else {
+    //               document.getElementById('signup-status').textContent = data.errors.join(", ");
+    //           }
+    //       } catch (error) {
+    //           console.error('Signup error:', error);
+    //       }
+    //   });
+
+      document.addEventListener('DOMContentLoaded', function () {
+          const authButtons = document.getElementById('auth-buttons');
+          const logoutButton = document.getElementById('logout-button');
+
+          function checkAuth() {
+              const token = localStorage.getItem('jwt');
+
+              if (token) {
+                  // User is logged in: Hide Login/Signup and Show Logout
+                  authButtons.style.display = 'none';
+                  logoutButton.style.display = 'block';
+              } else {
+                  // User is NOT logged in: Show Login/Signup, Hide Logout
+                  authButtons.style.display = 'block';
+                  logoutButton.style.display = 'none';
+              }
+          }
+
+          // Logout Functionality
+          logoutButton.addEventListener('click', function () {
+              localStorage.removeItem('jwt');  // Remove JWT Token
+              checkAuth();  // Refresh UI
+              window.location.reload(); // Reload the page to reflect logout
+          });
+
+          checkAuth();  // Run on page load
+      });
+
+      // function getCSRFToken() {
+      //     return document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+      // }
+
+      // async function postData(url, data = {}) {
+      //     const response = await fetch(url, {
+      //         method: 'POST',
+      //         headers: {
+      //             'Content-Type': 'application/json',
+      //             'X-CSRF-Token': getCSRFToken()  // ✅ Include CSRF token in request headers
+      //         },
+      //         body: JSON.stringify(data)
+      //     });
+
+      //     return response.json();
+      // }
+    </script>
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>

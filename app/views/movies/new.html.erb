@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Movie</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="container mt-4">
+    <h1>New Movie</h1>
+
+    <form id="creation-form" class="mb-3">
+        <input type="title" id="title" class="form-control mb-2" placeholder="Title" required>
+        <input type="description" id="description" class="form-control mb-2" placeholder="Description" required>
+        <button type="submit" class="btn btn-success">Create</button>
+    </form>
+
+    <p id="creation-status"></p>
+    <button onclick="window.location.href='/reporting_movies/overview.html'" class="btn btn-secondary">Back</button>
+
+    <script>
+        document.getElementById('creation-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const title = document.getElementById('title').value;
+            const description = document.getElementById('description').value;
+
+            console.log("Form submitted"); // Debugging check
+
+            try {
+                createMovie(title, description);
+            } catch (error) {
+                console.error('Creation error:', error);
+            }
+        });
+
+        async function createMovie(title, description) {
+            const token = localStorage.getItem("jwt");
+            const csrf_token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+            const response = await fetch("/movies", {
+                method: "POST",
+                headers: {
+                    'Authorization': `${token}`,
+                    'Content-Type': 'application/json',
+                    'X-CSRF-Token': csrf_token
+                },
+                body: JSON.stringify({ title, description })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log("Movie created successfully"); // Debugging line
+
+                // Make an authenticated request to the edit page
+                const editResponse = await fetch(`/movies/${data.id}/edit`, {
+                    method: "GET",
+                    headers: {
+                        'Authorization': `${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (editResponse.ok) {
+                    // Redirect to the edit page
+                    window.location.href = `/movies/${data.id}/edit`;
+                } else {
+                    console.error("Edit page request failed", await editResponse.text()); // Show server error message
+                }
+            } else {
+                console.error("Creation failed", await response.text()); // Show server error message
+            }
+        }
+    </script>
+</body>
+</html>

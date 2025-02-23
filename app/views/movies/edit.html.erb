@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Movie</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <meta name="csrf-token" content="<%= form_authenticity_token %>">
+</head>
+<body class="container mt-4">
+    <h1>Edit Movie</h1>
+
+    <form id="edit-movie-form" class="mb-3">
+        <input type="text" id="title" class="form-control mb-2" placeholder="Title" value="<%= @movie.title %>">
+        <input type="text" id="description" class="form-control mb-2" placeholder="Description" value="<%= @movie.description %>">
+        <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+
+    <p id="update-status"></p>
+    <button onclick="window.location.href='/reporting_movies/overview.html'" class="btn btn-secondary">Back</button>
+
+    <script>
+        async function loadMovie() {
+            const movieId = window.location.pathname.split("/")[2]; // Get ID from URL
+            const response = await fetch(`/movies/${movieId}.json`, {
+                                method: "GET",
+                                headers: {
+                                    "Authorization": `${token}`,
+                                    "Content-Type": "application/json"
+                                }
+                            });
+            const movie = await response.json();
+
+            document.getElementById("title").value = movie.title;
+            document.getElementById("description").value = movie.description;
+        }
+
+        document.getElementById("edit-movie-form").addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            const movieId = window.location.pathname.split("/")[2];
+            const title = document.getElementById("title").value;
+            const description = document.getElementById("description").value;
+            const token = localStorage.getItem("jwt");
+            const csrf_token = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+
+            const response = await fetch(`/movies/${movieId}`, {
+                method: "PUT",
+                headers: {
+                    "Authorization": `${token}`,
+                    "Content-Type": "application/json",
+                    "X-CSRF-Token": csrf_token
+                },
+                body: JSON.stringify({ title, description })
+            });
+
+            if (response.ok) {
+                document.getElementById("update-status").textContent = "Movie updated successfully!";
+            } else {
+                console.error("Update failed", await response.text());
+            }
+        });
+
+        window.onload = loadMovie;
+    </script>
+</body>
+</html>

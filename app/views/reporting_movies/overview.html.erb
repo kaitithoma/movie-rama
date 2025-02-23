@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movies Overview</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="container mt-4">
+    <h1>Movies Overview</h1>
+
+    <div id="new-movie-button-container" style="display: none;">
+        <button onclick="window.location.href='/movies/new.html'" class="btn btn-primary mb-3">Create New Movie</button>
+    </div>
+
+    <form id="pagination-form" class="mb-3">
+        <label>Page:</label>
+        <input type="number" id="page" class="form-control mb-2" placeholder="Page" value="1" min="1">
+
+        <label>Results per page:</label>
+        <input type="number" id="per_page" class="form-control mb-2" placeholder="Results per page" value="10" min="1">
+
+        <label>Sort By:</label>
+        <select id="sort_by" class="form-control mb-2">
+            <option value="created_at">Date Created</option>
+            <option value="likes_count">Likes</option>
+            <option value="hates_count">Hates</option>
+        </select>
+
+        <label>Sort Order:</label>
+        <select id="sort_order" class="form-control mb-2">
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+        </select>
+
+        <%# <label>User ID (Filter by user):</label> %>
+        <input type="hidden" id="user_id" class="form-control mb-2" placeholder="User ID (optional)">
+
+        <button type="submit" class="btn btn-primary">Apply Pagination & Sorting</button>
+    </form>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Created</th>
+                <th>Shared By</th>
+                <th>Likes</th>
+                <th>Hates</th>
+            </tr>
+        </thead>
+        <tbody id="movies-table">
+            <!-- Movies will be inserted here by JavaScript -->
+        </tbody>
+    </table>
+
+    <p id="pagination-info"></p>
+
+    <script>
+        async function loadMovies(params = {}) {
+            try {
+                const token = localStorage.getItem('jwt'); // Get JWT token
+                // const current_user_id = params.current_user_id; // Get Current User ID
+                const queryString = new URLSearchParams(params).toString();
+
+                const response = await fetch(`/reporting_movies/overview.json?${queryString}`, {
+                                            method: 'GET',
+                                            headers: {
+                                                'Content-Type': 'application/json',
+                                                'Authorization': `${token}` // Include JWT token
+                                            }
+                                        });
+
+                const results = await response.json();
+
+                const tableBody = document.getElementById('movies-table');
+                tableBody.innerHTML = '';
+
+                results.data.forEach(row_metric => {
+                    const userId = row_metric.user.id;
+                    const userName = row_metric.user.name || 'Unknown';
+
+                    let likeButton = "";
+                    let hateButton = "";
+
+                    if (token) {  // Show buttons only if user is logged in
+                        likeButton = `
+                            <button onclick="${row_metric.hated ? `swap(${row_metric.vote_id}, 'like')` : `toggleLike(${row_metric.id})`}" class="btn ${row_metric.liked ? 'btn-success' : 'btn-outline-success'}">
+                                👍 ${row_metric.likes_count}
+                            </button>
+                        `;
+
+                        hateButton = `
+                            <button onclick="${row_metric.liked ? `swap(${row_metric.vote_id}, 'hate')` : `toggleHate(${row_metric.id})`}" class="btn ${row_metric.hated ? 'btn-danger' : 'btn-outline-danger'}">
+                                👎 ${row_metric.hates_count}
+                            </button>
+                        `;
+                    } else {
+                        // Show only counts if user is not logged in
+                        likeButton = `<span>👍 ${row_metric.likes_count}</span>`;
+                        hateButton = `<span>👎 ${row_metric.hates_count}</span>`;
+                    }
+
+
+
+                    const row = `
+                        <tr>
+                            <td>${row_metric.title}</td>
+                            <td>${row_metric.description}</td>
+                            <td>${row_metric.created_days_ago} days ago</td>
+                            <td><a href="#" class="filter-user" data-user-id="${userId}">${userName}</a></td>
+
+                            <td>${likeButton}</td>
+                            <td>${hateButton}</td>
+                        </tr>
+                    `;
+                    tableBody.innerHTML += row;
+                });
+
+                document.getElementById('pagination-info').textContent =
+                `Page ${results.page} - Showing ${results.per_page} of ${results.total_records} movies`;
+
+                // Attach event listeners to user links
+                document.querySelectorAll('.filter-user').forEach(link => {
+                    link.addEventListener('click', function(event) {
+                        event.preventDefault();
+                        const userId = this.getAttribute('data-user-id');
+                        // const currentUserId = document.getElementById('current_user_id').value.id;
+                        document.getElementById('user_id').value = userId; // Set the input field
+                        loadMovies({
+                            page: 1,
+                            per_page: document.getElementById('per_page').value,
+                            sort_by: document.getElementById('sort_by').value,
+                            sort_order: document.getElementById('sort_order').value,
+                            user_id: userId
+                            // current_user_id: currentUserId
+                        });
+                    });
+                });
+
+            } catch (error) {
+                console.error('Error loading movies:', error);
+            }
+        }
+
+        async function toggleLike(movieId) {
+            const token = localStorage.getItem("jwt");
+            const csrf_token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            const url = `/votes`;
+            const method = "POST";
+
+            const response = await fetch(url, {
+                method: method,
+                headers: {
+                    'Authorization': `${token}`,
+                    'Content-Type': 'application/json',
+                    'X-CSRF-Token': csrf_token
+                },
+                body: JSON.stringify({ vote: { movie_id: movieId, vote_type: 'like' } })
+            });
+
+            if (response.ok) {
+                loadMovies(); // Reload movies after liking/unliking
+            }
+        }
+
+        async function toggleHate(movieId) {
+            const token = localStorage.getItem("jwt");
+            const csrf_token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            const url = `/votes`;
+            const method = "POST";
+
+            const response = await fetch(url, {
+                method: method,
+                headers: {
+                    'Authorization': `${token}`,
+                    'Content-Type': 'application/json',
+                    'X-CSRF-Token': csrf_token
+                },
+                body: JSON.stringify({ vote:{ movie_id: movieId, vote_type: 'hate' } })
+            });
+
+            if (response.ok) {
+                loadMovies(); // Reload movies after hating/unhating
+            }
+        }
+
+        async function swap(VoteId, voteType) {
+            const token = localStorage.getItem("jwt");
+            const csrf_token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            const response = await fetch(`/votes/${VoteId}`, {
+                method: "PUT",
+                headers: {
+                    'Authorization': `${token}`,
+                    'X-CSRF-Token': csrf_token,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ vote: { vote_type: voteType } })
+            });
+
+            if (response.ok) {
+                loadMovies();
+            }
+        }
+
+        document.getElementById('pagination-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const page = document.getElementById('page').value;
+            const per_page = document.getElementById('per_page').value;
+            const sort_by = document.getElementById('sort_by').value;
+            const sort_order = document.getElementById('sort_order').value;
+            const user_id = document.getElementById('user_id').value;
+            // const current_user_id = document.getElementById('current_user_id').value;
+
+            // Only include user_id if it's provided
+            const params = { page, per_page, sort_by, sort_order };
+            if (user_id) params.user_id = user_id;
+            // if (current_user_id) params.current_user_id = current_user_id;
+
+            loadMovies(params);
+        });
+
+        // window.onload = () => loadMovies({});
+        window.onload = () => {
+            const token = localStorage.getItem('jwt');
+            if (token) {
+                document.getElementById('new-movie-button-container').style.display = 'block';
+            }
+            loadMovies({});
+        };
+    </script>
+</body>
+</html>
