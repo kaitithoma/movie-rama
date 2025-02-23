@@ -25,6 +25,7 @@ development:
     <<: *default
     database: movie_rama_development
     username: kaiti
+    password: postgres
   queue:
     <<: *default
     database: movie_rama_development_queue
