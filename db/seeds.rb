@@ -31,17 +31,10 @@ User.where(email: 'aikelthoma@gmail.com').first_or_create(
 end
 
 # Create likes
-50.times do |i|
-  Like.find_or_create_by(
+100.times do |i|
+  Vote.find_or_create_by(
     user: Random.rand(1..2).even? ? User.first : User.last,
-    movie: Movie.all[Random.rand(1..20)]
-  )
-end
-
-# Create hates
-50.times do |i|
-  Hate.find_or_create_by(
-    user: Random.rand(1..2).even? ? User.first : User.last,
-    movie: Movie.all[Random.rand(1..20)]
+    movie: Movie.all[Random.rand(1..20)],
+    vote_type: Random.rand(1..2).even? ? 'like' : 'hate'
   )
 end
