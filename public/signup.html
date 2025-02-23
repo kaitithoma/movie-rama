@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="container mt-4">
+    <h1>Sign Up</h1>
+
+    <form id="signup-form" class="mb-3">
+        <input type="email" id="signup-email" class="form-control mb-2" placeholder="Email" required>
+        <input type="string" id="signup-firstname" class="form-control mb-2" placeholder="Firstname" required>
+        <input type="string" id="signup-lastname" class="form-control mb-2" placeholder="Lastname" required>
+        <input type="password" id="signup-password" class="form-control mb-2" placeholder="Password" required>
+        <!-- <input type="password" id="signup-password-confirm" class="form-control mb-2" placeholder="Confirm Password" required> -->
+        <button type="submit" class="btn btn-primary">Sign Up</button>
+    </form>
+
+    <p id="signup-status"></p>
+    <button onclick="window.location.href='reporting_movies/overview.html'" class="btn btn-secondary">Back</button>
+
+    <script>
+        document.getElementById('signup-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const email = document.getElementById('signup-email').value;
+            const firstname = document.getElementById('signup-firstname').value;
+            const lastname = document.getElementById('signup-lastname').value;
+            const password = document.getElementById('signup-password').value;
+            // const passwordConfirmation = document.getElementById('signup-password-confirm').value;
+
+            try {
+                const response = await fetch('/signup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password, firstname, lastname })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    localStorage.setItem('jwt', data.token);
+                    document.getElementById('signup-status').textContent = "Signup successful! Redirecting...";
+                    setTimeout(() => window.location.href = 'reporting_movies/overview.html', 2000);
+                } else {
+                    document.getElementById('signup-status').textContent = data.errors.join(", ");
+                }
+            } catch (error) {
+                console.error('Signup error:', error);
+            }
+        });
+    </script>
+</body>
+</html>
