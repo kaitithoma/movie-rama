@@ -95,3 +95,9 @@ group :test do
   gem "selenium-webdriver"
   gem "database_cleaner-active_record"
 end
+
+# gem "gem", "~> 0.0.1.alpha"
+gem "jsonapi-serializer", "~> 2.2"
+
+# gem "gem", "~> 0.0.1.alpha"
+gem "ruby2_keywords", "~> 0.0.5"
