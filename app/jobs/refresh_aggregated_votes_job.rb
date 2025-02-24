@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
 class RefreshAggregatedVotesJob < ApplicationJob
-  queue_as :default
+  limits_concurrency to: 1, key: :default
 
-  def perform(*args)
-    AggregatedVote.refresh
+  def perform(args = {})
+    AggregatedVote.transaction do
+      AggregatedVote.refresh
+    end
   end
 end
