@@ -55,12 +55,14 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
+    # container:
+    #   image: ghcr.io/catthehacker/ubuntu:full-latest
 
     services:
       postgres:
         image: postgres
         env:
-          POSTGRES_USER: kaiti
+          POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
         ports:
           - 5432:5432
@@ -73,6 +75,15 @@ jobs:
       #   options: --health-cmd "redis-cli ping" --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
+      - name: Install Google Chrome
+        run: |
+          sudo apt update
+          sudo apt install -y wget
+          wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+          echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
+          sudo apt update
+          sudo apt install -y google-chrome-stable
+
       - name: Install packages
         run: sudo apt-get update && sudo apt-get install --no-install-recommends -y build-essential git libpq-dev pkg-config google-chrome-stable
 
@@ -95,12 +106,13 @@ jobs:
 
       - name: Set up database
         run: |
-          cp config/database.yml.ci config/database.yml
           bundle exec rake db:create
           bundle exec rake db:migrate
         env:
           RAILS_ENV: test
           PGHOST: localhost
+          PGUSER: postgres
+          PGPASSWORD: postgres
 
       - name: Run tests
         env:
