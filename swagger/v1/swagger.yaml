@@ -1,0 +1,455 @@
+---
+openapi: 3.0.1
+components:
+  securitySchemes:
+    basic_auth:
+      type: http
+      scheme: basic
+  schemas:
+    errors:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            type: string
+    errors_object:
+      type: object
+      properties:
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+    movie:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          example: movie
+        attributes:
+          title:
+            type: string
+            example: The Matrix
+          description:
+            type: string
+            example: A movie about a matrix
+          created_days_ago:
+            type: integer
+            example: 1
+        relationships:
+          user:
+            "$ref": "#/components/schemas/relationship_object"
+    movie_params:
+      type: object
+      properties:
+        title:
+          type: string
+          example: The Matrix
+        description:
+          type: string
+          example: A movie about a matrix
+      required:
+      - title
+      - description
+    vote:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          example: vote
+        attributes:
+          vote_type:
+            type: string
+            enum:
+            - like
+            - dislike
+        relationships:
+          user:
+            "$ref": "#/components/schemas/relationship_object"
+          movie:
+            "$ref": "#/components/schemas/relationship_object"
+    vote_params:
+      type: object
+      properties:
+        movie_id:
+          type: integer
+          example: 1
+        vote_type:
+          type: string
+          enum:
+          - like
+          - dislike
+    user:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        email:
+          type: string
+          example: user@gmail.com
+    user_params:
+      type: object
+      properties:
+        email:
+          type: string
+          example: user@gmail.com
+        password:
+          type: string
+          example: '123456'
+        firstname:
+          type: string
+          example: John
+        lastname:
+          type: string
+          example: Doe
+      required:
+      - email
+      - password
+      - firstname
+      - lastname
+    reporting_movies:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                example: 1
+              title:
+                type: string
+                example: The Matrix
+              description:
+                type: string
+                example: A movie about a matrix
+              created_days_ago:
+                type: integer
+                example: 1
+              user:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  name:
+                    type: string
+                    example: Alice Smith
+              vote_id:
+                type: integer
+                example: 1
+                nullable: true
+              liked:
+                type: boolean
+                default: false
+              hated:
+                type: boolean
+                default: false
+              likes_count:
+                type: integer
+                example: 1
+              hates_count:
+                type: integer
+                example: 1
+        page:
+          type: integer
+          example: 1
+        per_page:
+          type: integer
+          example: 10
+        total_records:
+          type: integer
+          example: 1
+    relationship_object:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+              example: '1'
+            type:
+              type: string
+          nullable: true
+info:
+  title: MovieRama API
+  version: v1
+produces:
+- application/json
+paths:
+  "/signup":
+    post:
+      summary: signup authentication
+      tags:
+      - Authentication
+      parameters: []
+      responses:
+        '201':
+          description: user created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                  user:
+                    "$ref": "#/components/schemas/user"
+        '422':
+          description: invalid request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errors"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/user_params"
+  "/login":
+    post:
+      summary: login authentication
+      tags:
+      - Authentication
+      parameters: []
+      responses:
+        '200':
+          description: user logged in
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      email:
+                        type: string
+                    required:
+                    - id
+                    - email
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errors"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+              required:
+              - email
+              - password
+  "/movies":
+    post:
+      summary: Creates a movie
+      parameters: []
+      tags:
+      - Movies
+      security:
+      - basic_auth: []
+      responses:
+        '201':
+          description: movie created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  data:
+                    "$ref": "#/components/schemas/movie"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errors"
+        '422':
+          description: invalid request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errors_object"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/movie_params"
+  "/reporting_movies/overview":
+    get:
+      summary: overview reporting_movie
+      tags:
+      - Reporting Movies
+      parameters:
+      - name: per_page
+        in: query
+        required: false
+        schema:
+          type: integer
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+      - name: sort_by
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: sort_order
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: user_id
+        in: query
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/reporting_movies"
+  "/votes":
+    post:
+      summary: create vote
+      tags:
+      - Votes
+      security:
+      - basic_auth: []
+      parameters: []
+      responses:
+        '201':
+          description: vote created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  data:
+                    "$ref": "#/components/schemas/vote"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errors"
+        '422':
+          description: invalid params
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errors_object"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/vote_params"
+  "/votes/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    patch:
+      summary: update vote
+      tags:
+      - Votes
+      security:
+      - basic_auth: []
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  data:
+                    "$ref": "#/components/schemas/vote"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errors"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errors"
+        '422':
+          description: invalid params
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errors_object"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/vote_params"
+    delete:
+      summary: delete vote
+      tags:
+      - Votes
+      security:
+      - basic_auth: []
+      responses:
+        '204':
+          description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errors"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errors"
+        '422':
+          description: invalid params
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/errors_object"
+servers:
+- url: http://localhost:3000

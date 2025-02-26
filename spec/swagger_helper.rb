@@ -18,12 +18,6 @@ RSpec.configure do |config|
   config.openapi_specs = {
     'v1/swagger.yaml' => {
       openapi: '3.0.1',
-      info: {
-        title: 'MovieRama API',
-        version: 'v1'
-      },
-      produces: [ 'application/json' ],
-      paths: {},
       components: {
         securitySchemes: {
           basic_auth: {
@@ -31,18 +25,16 @@ RSpec.configure do |config|
             scheme: :basic
           }
         },
-        # schemas: Spec::Support::Schemas.get
+        schemas: Spec::Support::Schemas.get
       },
+      info: {
+        title: 'MovieRama API',
+        version: 'v1'
+      },
+      produces: [ 'application/json' ],
+      paths: {},
       servers: [
         { url: 'http://localhost:3000' }
-        # {
-          # url: 'https://{defaultHost}',
-          # variables: {
-          #   defaultHost: {
-          #     default: 'www.example.com'
-          #   }
-          # }
-        # }
       ]
     }
   }

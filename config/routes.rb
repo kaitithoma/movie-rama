@@ -29,6 +29,6 @@ Rails.application.routes.draw do
   end
 
   %i[ movies ].each do |model|
-    resources model, only: %i[ new create show update edit ]
+    resources model, only: %i[ new create show update ]
   end
 end
