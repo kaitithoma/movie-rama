@@ -7,7 +7,7 @@ class Vote < ApplicationRecord
   belongs_to :movie
 
   validates :user_id, uniqueness: { scope: :movie_id }
-  validates :vote_type, presence: true, inclusion: { in: Vote.vote_types.keys }
+  validates :vote_type, presence: true, inclusion: { in: Vote.vote_types.keys, message: "%{value} is an invalid role" }
   validate :user_cannot_vote_their_own_movie
 
   after_commit :refresh_aggregated_votes

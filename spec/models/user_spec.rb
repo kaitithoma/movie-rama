@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe User, type: :model, focus: true do
+RSpec.describe User, type: :model do
   subject { build(:user, email: "test@example.com", password: "password123", password_confirmation: "password123") }
 
   it { is_expected.to have_many(:movies) }

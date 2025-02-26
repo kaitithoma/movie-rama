@@ -6,6 +6,7 @@ RSpec.describe Movie, type: :model do
   it { is_expected.to belong_to(:user) }
 
   it { is_expected.to validate_presence_of(:title) }
+  it { is_expected.to validate_uniqueness_of(:title).case_insensitive }
   it { is_expected.to validate_presence_of(:description) }
 
   it { is_expected.to delegate_method(:name).to(:user).with_prefix }
