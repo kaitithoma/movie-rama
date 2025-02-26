@@ -70,7 +70,7 @@ group :development, :test do
   gem "faker"
 
   # Unit tests
-  gem "rspec-rails", "~> 7.0.0"
+  gem "rspec-rails", "~> 7.1.1"
 
   # Use factory_bot for generating fake data in tests
   gem "factory_bot_rails"
