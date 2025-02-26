@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class AuthenticationController < ApplicationController
-  protect_from_forgery unless: -> { request.format.json? }
+  protect_from_forgery with: :null_session
 
   def signup
     user = User.new(user_params)
@@ -21,7 +21,7 @@ class AuthenticationController < ApplicationController
       token = JsonWebToken.encode(user_id: user.id)
       render json: { token: token, user: { id: user.id, email: user.email } }, status: :ok
     else
-      render json: { error: "Invalid email or password" }, status: :unauthorized
+      render json: { errors: [ "Invalid email or password" ] }, status: :unauthorized
     end
   end
 

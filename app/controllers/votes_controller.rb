@@ -1,28 +1,38 @@
 # frozen_string_literal: true
 
 class VotesController < BaseController
+  before_action :set_vote, only: [ :destroy, :update ]
+
   def create
     @vote = current_user.votes.new(vote_params)
-    return @vote.errors unless @vote.save
+    return api_message object: @vote, status: :created if @vote.save
 
-    render json: { message: "Vote successfully created" }, status: :created
+    api_error errors: @vote.errors, status: :unprocessable_entity
+  rescue ArgumentError => e
+    api_error errors: e.message, status: :unprocessable_entity
   end
 
   def destroy
-    @vote = current_user.votes.find_by(id: params[:id])
-    return @vote.errors unless @vote.destroy
+    return api_error errors: [ "Vote not found" ], status: :not_found unless @vote
+    return head :no_content if @vote.destroy
 
-    render json: { message: "Vote successfully deleted" }, status: :ok
+    api_error errors: @vote.errors, status: :unprocessable_entity
   end
 
   def update
-    @vote = current_user.votes.find_by(id: params[:id])
-    return @vote.errors unless @vote.update(vote_params)
+    return api_error errors: [ "Vote not found" ], status: :not_found unless @vote
+    return api_message object: @vote if @vote.update(vote_params)
 
-    render json: { message: "Vote successfully updated" }, status: :ok
+    api_error errors: @vote.errors, status: :unprocessable_entity
+  rescue ArgumentError => e
+    api_error errors: e.message, status: :unprocessable_entity
   end
 
   private
+
+  def set_vote
+    @vote = current_user.votes.find_by(id: params[:id])
+  end
 
   def vote_params
     params.require(:vote).permit(:movie_id, :vote_type)
