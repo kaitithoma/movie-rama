@@ -18,14 +18,15 @@ default: &default
   # For details on connection pooling, see Rails configuration guide
   # https://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  host: db
+  username: kaiti
+  password: postgres
 
 
 development:
   primary:
     <<: *default
     database: movie_rama_development
-    username: kaiti
-    password: postgres
   queue:
     <<: *default
     database: movie_rama_development_queue
