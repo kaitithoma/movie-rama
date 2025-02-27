@@ -7,6 +7,10 @@
 # Ignore bundler config.
 /.bundle
 
+# Ignore the default SQLite database.
+/db/*.sqlite3
+/db/*.sqlite3-*
+
 # Ignore all environment files.
 /.env*
 
@@ -21,6 +25,11 @@
 !/tmp/pids/
 !/tmp/pids/.keep
 
+# Ignore uploaded files in development.
+/storage/*
+!/storage/.keep
+.byebug_history
+
 # Ignore storage (uploaded files in development and any SQLite databases).
 /storage/*
 !/storage/.keep
@@ -33,5 +42,74 @@
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 
-# Ignore simplecov coverage
+# local environment
+.env.development
+.env
+
+# tmux
+tmux*
+
+# simplecov
 coverage
+
+# Reports
+reports/*
+test-reports/*
+
+# Rubycritic files
+rubycritic
+
+# ctags
+tags
+.tags
+
+# Ignore Byebug command history file.
+.byebug_history
+
+# JetBrains
+.idea/
+# if you remove the above rule, at least ignore the following:
+uploads
+
+# SublimeText
+# Cache files for Sublime Text
+*.tmlanguage.cache
+*.tmPreferences.cache
+*.stTheme.cache
+
+# Workspace files are user-specific
+*.sublime-workspace
+
+# VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
+
+# Ignore console scripts
+/scripts/*
+
+# Ignore failed specs tracking file
+/spec/examples.txt
+
+# Ignore public
+/public/*
+!/public/default_avatar.jpg
+!/public/notification.png
+
+/config/credentials/development.key
+
+/config/credentials/staging.key
+
+bin/act
