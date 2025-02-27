@@ -53,10 +53,6 @@ module Reporting
         @results ||= filter_user order base_query
       end
 
-      def created_days_ago(created_at)
-        (Time.zone.now.to_date - created_at.to_date).to_i
-      end
-
       def user_hash(user)
         { id: user.id, name: "#{user.firstname} #{user.lastname}" }
       end
@@ -71,7 +67,7 @@ module Reporting
                                        id: movie.id,
                                        title: movie.title,
                                        description: movie.description,
-                                       created_days_ago: created_days_ago(movie.created_at),
+                                       created_days_ago: movie.created_days_ago,
                                        user: user_hash(movie.user),
                                        vote_id: current_user_vote&.id,
                                        liked: current_user_vote&.like? || false,
