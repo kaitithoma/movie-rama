@@ -85,14 +85,16 @@
                     let hateButton = "";
 
                     if (token) {  // Show buttons only if user is logged in
+                        toggleLikeAction = row_metric.liked ? `deleteVote(${row_metric.vote_id})` : `toggleLike(${row_metric.id})`;
+                        toggleHateAction = row_metric.hated ? `deleteVote(${row_metric.vote_id})` : `toggleHate(${row_metric.id})`;
                         likeButton = `
-                            <button onclick="${row_metric.hated ? `swap(${row_metric.vote_id}, 'like')` : `toggleLike(${row_metric.id})`}" class="btn ${row_metric.liked ? 'btn-success' : 'btn-outline-success'}">
+                            <button onclick="${row_metric.hated ? `swap(${row_metric.vote_id}, 'like')` : toggleLikeAction}" class="btn ${row_metric.liked ? 'btn-success' : 'btn-outline-success'}">
                                 👍 ${row_metric.likes_count}
                             </button>
                         `;
 
                         hateButton = `
-                            <button onclick="${row_metric.liked ? `swap(${row_metric.vote_id}, 'hate')` : `toggleHate(${row_metric.id})`}" class="btn ${row_metric.hated ? 'btn-danger' : 'btn-outline-danger'}">
+                            <button onclick="${row_metric.liked ? `swap(${row_metric.vote_id}, 'hate')` : toggleHateAction}" class="btn ${row_metric.hated ? 'btn-danger' : 'btn-outline-danger'}">
                                 👎 ${row_metric.hates_count}
                             </button>
                         `;
@@ -165,6 +167,23 @@
             }
         }
 
+        async function deleteVote(VoteId) {
+            const token = localStorage.getItem("jwt");
+            const csrf_token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            const response = await fetch(`/votes/${VoteId}`, {
+                method: "DELETE",
+                headers: {
+                    'Authorization': `${token}`,
+                    'X-CSRF-Token': csrf_token,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response.no_content) {
+                loadMovies();
+            }
+        }
+
         async function toggleHate(movieId) {
             const token = localStorage.getItem("jwt");
             const csrf_token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -190,7 +209,7 @@
             const token = localStorage.getItem("jwt");
             const csrf_token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
             const response = await fetch(`/votes/${VoteId}`, {
-                method: "PUT",
+                method: "PATCH",
                 headers: {
                     'Authorization': `${token}`,
                     'X-CSRF-Token': csrf_token,

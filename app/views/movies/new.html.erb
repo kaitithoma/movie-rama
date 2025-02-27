@@ -48,9 +48,9 @@
                 body: JSON.stringify({ title, description })
             });
 
-            if (response.ok) {
+            if (response.created) {
                 const data = await response.json();
-                console.log("Movie created successfully"); // Debugging line
+                console.log(response.message); // Debugging line
 
                 // Make an authenticated request to the edit page
                 const editResponse = await fetch(`/movies/${data.id}/edit`, {

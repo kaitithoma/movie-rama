@@ -45,7 +45,7 @@
             const csrf_token = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
 
             const response = await fetch(`/movies/${movieId}`, {
-                method: "PUT",
+                method: "PATCH",
                 headers: {
                     "Authorization": `${token}`,
                     "Content-Type": "application/json",
