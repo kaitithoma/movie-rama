@@ -51,7 +51,7 @@ services:
     build: .
     container_name: rails_test
     volumes:
-      # - .:/app
+      - .:/app
       - coverage:/app/coverage
     environment:
       RAILS_ENV: test
@@ -59,19 +59,6 @@ services:
       - db
     command: >
       sh -c "bundle exec rake rswag:specs:swaggerize && bundle exec rspec"
-    # command: rspec
-    # entrypoint: ["bundle", "exec", "rspec"]
-
-  # test:
-  #   build: .
-  #   container_name: rails_test
-  #   volumes:
-  #     - .:/app
-  #   environment:
-  #     RAILS_ENV: test
-  #   depends_on:
-  #     - db
-  #   command: bundle exec rspec --format documentation --out coverage/index.html
 
   coverage:
     image: nginx:alpine
@@ -86,4 +73,3 @@ services:
 volumes:
   postgres_data:
   coverage:
-
