@@ -25,17 +25,17 @@
         <tbody>
           <tr>
             <td class="left_align"><a href="app-controllers-movies_controller_rb.html">app/controllers/movies_controller.rb</a></td>
-            <td class='right_align'><tt>20</tt></td>
-            <td class='right_align'><tt>16</tt></td>
-            <td class="left_align"><div class="percent_graph_legend"><tt class=''>20.00%</tt></div>
+            <td class='right_align'><tt>19</tt></td>
+            <td class='right_align'><tt>10</tt></td>
+            <td class="left_align"><div class="percent_graph_legend"><tt class=''>100.00%</tt></div>
       <div class="percent_graph">
-        <div class="covered" style="width:20px"></div>
-        <div class="uncovered" style="width:80px"></div>
+        <div class="covered" style="width:100px"></div>
+        <div class="uncovered" style="width:0px"></div>
       </div></td>
-            <td class="left_align"><div class="percent_graph_legend"><tt class=''>0.00%</tt></div>
+            <td class="left_align"><div class="percent_graph_legend"><tt class=''>100.00%</tt></div>
       <div class="percent_graph">
-        <div class="covered" style="width:0px"></div>
-        <div class="uncovered" style="width:100px"></div>
+        <div class="covered" style="width:100px"></div>
+        <div class="uncovered" style="width:0px"></div>
       </div></td>
           </tr>
         </tbody>
@@ -56,64 +56,61 @@
         <tr class="inferred">
           <td><pre><a name="line3">3</a> </pre></td>
         </tr>
-        <tr class="uncovered">
-          <td><pre><a name="line4">4</a> class MoviesController &lt; ApplicationController</pre></td>
+        <tr class="marked">
+          <td><pre><a name="line4">4</a> class MoviesController &lt; BaseController</pre></td>
         </tr>
-        <tr class="uncovered">
-          <td><pre><a name="line5">5</a>   def overview</pre></td>
+        <tr class="marked">
+          <td><pre><a name="line5">5</a>   before_action :set_movie, only: [ :show, :edit ]</pre></td>
         </tr>
-        <tr class="uncovered">
-          <td><pre><a name="line6">6</a>     render json: Reporting::Movies::Overview.call(overview_args), status: :ok</pre></td>
-        </tr>
-        <tr class="uncovered">
-          <td><pre><a name="line7">7</a>   end</pre></td>
+        <tr class="marked">
+          <td><pre><a name="line6">6</a>   skip_before_action :authorize_request, only: [ :new, :edit ]</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line8">8</a> </pre></td>
+          <td><pre><a name="line7">7</a> </pre></td>
         </tr>
-        <tr class="uncovered">
-          <td><pre><a name="line9">9</a>   private</pre></td>
+        <tr class="marked">
+          <td><pre><a name="line8">8</a>   def create</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line9">9</a>     @movie = current_user.movies.new(movie_params)</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line10">10</a>     return api_message object: @movie, status: :created if @movie.save</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line10">10</a> </pre></td>
+          <td><pre><a name="line11">11</a> </pre></td>
         </tr>
-        <tr class="uncovered">
-          <td><pre><a name="line11">11</a>   def overview_args</pre></td>
+        <tr class="marked">
+          <td><pre><a name="line12">12</a>     api_error errors: @movie.errors, status: :unprocessable_entity</pre></td>
         </tr>
-        <tr class="uncovered">
-          <td><pre><a name="line12">12</a>     params = params.permit(:page, :per_page, :sort_by, :sort_order, :user_id)</pre></td>
+        <tr class="inferred">
+          <td><pre><a name="line13">13</a>   end</pre></td>
         </tr>
-        <tr class="uncovered">
-          <td><pre><a name="line13">13</a>     {</pre></td>
+        <tr class="inferred">
+          <td><pre><a name="line14">14</a> </pre></td>
         </tr>
-        <tr class="uncovered">
-          <td><pre><a name="line14">14</a>       limit: params[:per_page],</pre></td>
+        <tr class="marked">
+          <td><pre><a name="line15">15</a>   private</pre></td>
         </tr>
-        <tr class="uncovered">
-          <td><pre><a name="line15">15</a>       page: params[:page],</pre></td>
+        <tr class="inferred">
+          <td><pre><a name="line16">16</a> </pre></td>
         </tr>
-        <tr class="uncovered">
-          <td><pre><a name="line16">16</a>       sort_by: params[:sort_by],</pre></td>
+        <tr class="marked">
+          <td><pre><a name="line17">17</a>   def movie_params</pre></td>
         </tr>
-        <tr class="uncovered">
-          <td><pre><a name="line17">17</a>       sort_order: params[:sort_order],</pre></td>
+        <tr class="marked">
+          <td><pre><a name="line18">18</a>     params.require(:movie).permit(:title, :description)</pre></td>
         </tr>
-        <tr class="uncovered">
-          <td><pre><a name="line18">18</a>       user_id: params[:user_id]</pre></td>
+        <tr class="inferred">
+          <td><pre><a name="line19">19</a>   end</pre></td>
         </tr>
-        <tr class="uncovered">
-          <td><pre><a name="line19">19</a>     }</pre></td>
-        </tr>
-        <tr class="uncovered">
-          <td><pre><a name="line20">20</a>   end</pre></td>
-        </tr>
-        <tr class="uncovered">
-          <td><pre><a name="line21">21</a> end</pre></td>
+        <tr class="inferred">
+          <td><pre><a name="line20">20</a> end</pre></td>
         </tr>
       </tbody>
     </table>
 
-    <p>Generated on 2025-02-19 23:31:39 +0200 with <a href="https://github.com/fguillen/simplecov-rcov">SimpleCov-RCov 0.2.3</a></p>
+    <p>Generated on 2025-02-27 18:48:44 +0200 with <a href="https://github.com/fguillen/simplecov-rcov">SimpleCov-RCov 0.2.3</a></p>
 
   </body>
 </html>

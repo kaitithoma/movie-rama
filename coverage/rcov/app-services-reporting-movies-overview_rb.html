@@ -25,17 +25,17 @@
         <tbody>
           <tr>
             <td class="left_align"><a href="app-services-reporting-movies-overview_rb.html">app/services/reporting/movies/overview.rb</a></td>
-            <td class='right_align'><tt>96</tt></td>
-            <td class='right_align'><tt>42</tt></td>
-            <td class="left_align"><div class="percent_graph_legend"><tt class=''>76.04%</tt></div>
+            <td class='right_align'><tt>103</tt></td>
+            <td class='right_align'><tt>43</tt></td>
+            <td class="left_align"><div class="percent_graph_legend"><tt class=''>100.00%</tt></div>
       <div class="percent_graph">
-        <div class="covered" style="width:76px"></div>
-        <div class="uncovered" style="width:24px"></div>
+        <div class="covered" style="width:100px"></div>
+        <div class="uncovered" style="width:0px"></div>
       </div></td>
-            <td class="left_align"><div class="percent_graph_legend"><tt class=''>45.24%</tt></div>
+            <td class="left_align"><div class="percent_graph_legend"><tt class=''>100.00%</tt></div>
       <div class="percent_graph">
-        <div class="covered" style="width:45px"></div>
-        <div class="uncovered" style="width:55px"></div>
+        <div class="covered" style="width:100px"></div>
+        <div class="uncovered" style="width:0px"></div>
       </div></td>
           </tr>
         </tbody>
@@ -68,7 +68,7 @@
         <tr class="marked">
           <td><pre><a name="line7">7</a>       def self.call(...)</pre></td>
         </tr>
-        <tr class="uncovered">
+        <tr class="marked">
           <td><pre><a name="line8">8</a>         new(...).call</pre></td>
         </tr>
         <tr class="inferred">
@@ -80,268 +80,289 @@
         <tr class="marked">
           <td><pre><a name="line11">11</a>       def initialize(args = {})</pre></td>
         </tr>
-        <tr class="uncovered">
+        <tr class="marked">
           <td><pre><a name="line12">12</a>         @limit = args[:limit] || 10</pre></td>
         </tr>
-        <tr class="uncovered">
+        <tr class="marked">
           <td><pre><a name="line13">13</a>         @page = args[:page] || 1</pre></td>
         </tr>
-        <tr class="uncovered">
+        <tr class="marked">
           <td><pre><a name="line14">14</a>         @offset = (page.to_i - 1) * limit.to_i</pre></td>
         </tr>
-        <tr class="uncovered">
+        <tr class="marked">
           <td><pre><a name="line15">15</a>         @sort_by = args[:sort_by]</pre></td>
         </tr>
-        <tr class="uncovered">
+        <tr class="marked">
           <td><pre><a name="line16">16</a>         @sort_order = args[:sort_order]</pre></td>
         </tr>
-        <tr class="uncovered">
+        <tr class="marked">
           <td><pre><a name="line17">17</a>         @user_id = args[:user_id]</pre></td>
         </tr>
-        <tr class="inferred">
-          <td><pre><a name="line18">18</a>       end</pre></td>
+        <tr class="marked">
+          <td><pre><a name="line18">18</a>         @current_user_id = args[:current_user_id]</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line19">19</a> </pre></td>
+          <td><pre><a name="line19">19</a>       end</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line20">20</a> </pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line20">20</a>       def call</pre></td>
-        </tr>
-        <tr class="uncovered">
-          <td><pre><a name="line21">21</a>         data.merge(pagination).merge(total_records)</pre></td>
-        </tr>
-        <tr class="inferred">
-          <td><pre><a name="line22">22</a>       end</pre></td>
-        </tr>
-        <tr class="inferred">
-          <td><pre><a name="line23">23</a> </pre></td>
+          <td><pre><a name="line21">21</a>       def call</pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line24">24</a>       private</pre></td>
+          <td><pre><a name="line22">22</a>         Rails.cache.fetch(&quot;reporting/movies/overview/#{Digest::MD5.hexdigest(</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line25">25</a> </pre></td>
+          <td><pre><a name="line23">23</a>           [ limit, page, sort_by, sort_order, user_id, current_user_id ].join</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line24">24</a>         )}&quot;, expires_in: 1.seconds) do</pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line26">26</a>       attr_reader :limit, :page, :offset, :sort_by, :sort_order, :user_id</pre></td>
+          <td><pre><a name="line25">25</a>           data.merge(pagination).merge(total_records)</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line27">27</a> </pre></td>
+          <td><pre><a name="line26">26</a>         end</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line27">27</a>       end</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line28">28</a> </pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line28">28</a>       def base_query</pre></td>
-        </tr>
-        <tr class="uncovered">
-          <td><pre><a name="line29">29</a>         AggregatedVote.select(:movie_id, :user_id, :likes_count, :hates_count)</pre></td>
+          <td><pre><a name="line29">29</a>       private</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line30">30</a>                       .select(&quot;count(*) OVER() AS total_count&quot;)</pre></td>
-        </tr>
-        <tr class="inferred">
-          <td><pre><a name="line31">31</a>                       .includes(:user)</pre></td>
-        </tr>
-        <tr class="inferred">
-          <td><pre><a name="line32">32</a>                       .limit(limit)</pre></td>
-        </tr>
-        <tr class="inferred">
-          <td><pre><a name="line33">33</a>                       .offset(offset)</pre></td>
-        </tr>
-        <tr class="inferred">
-          <td><pre><a name="line34">34</a>       end</pre></td>
-        </tr>
-        <tr class="inferred">
-          <td><pre><a name="line35">35</a> </pre></td>
+          <td><pre><a name="line30">30</a> </pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line36">36</a>       def filter_user(query)</pre></td>
-        </tr>
-        <tr class="uncovered">
-          <td><pre><a name="line37">37</a>         return query unless user_id</pre></td>
+          <td><pre><a name="line31">31</a>       attr_reader :limit, :page, :offset, :sort_by, :sort_order, :user_id, :current_user_id</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line38">38</a> </pre></td>
-        </tr>
-        <tr class="uncovered">
-          <td><pre><a name="line39">39</a>         query.where(user_id:)</pre></td>
-        </tr>
-        <tr class="inferred">
-          <td><pre><a name="line40">40</a>       end</pre></td>
-        </tr>
-        <tr class="inferred">
-          <td><pre><a name="line41">41</a> </pre></td>
+          <td><pre><a name="line32">32</a> </pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line42">42</a>       def order(query)</pre></td>
-        </tr>
-        <tr class="uncovered">
-          <td><pre><a name="line43">43</a>         return query unless sort_by</pre></td>
-        </tr>
-        <tr class="inferred">
-          <td><pre><a name="line44">44</a> </pre></td>
-        </tr>
-        <tr class="uncovered">
-          <td><pre><a name="line45">45</a>         query.order(&quot;#{sort_by} #{sort_order || &#39;DESC&#39;}&quot;)</pre></td>
-        </tr>
-        <tr class="inferred">
-          <td><pre><a name="line46">46</a>       end</pre></td>
-        </tr>
-        <tr class="inferred">
-          <td><pre><a name="line47">47</a> </pre></td>
+          <td><pre><a name="line33">33</a>       def base_query</pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line48">48</a>       def results</pre></td>
-        </tr>
-        <tr class="uncovered">
-          <td><pre><a name="line49">49</a>         @results ||= filter_user order base_query</pre></td>
+          <td><pre><a name="line34">34</a>         AggregatedVote.select(:movie_id, :user_id, :likes_count, :hates_count)</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line50">50</a>       end</pre></td>
+          <td><pre><a name="line35">35</a>                       .select(&quot;count(*) OVER() AS total_count&quot;)</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line51">51</a> </pre></td>
+          <td><pre><a name="line36">36</a>                       .includes(:user)</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line37">37</a>                       .limit(limit)</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line38">38</a>                       .offset(offset)</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line39">39</a>       end</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line40">40</a> </pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line52">52</a>       def created_days_ago(created_at)</pre></td>
-        </tr>
-        <tr class="uncovered">
-          <td><pre><a name="line53">53</a>         (Time.zone.now.to_date - created_at.to_date).to_i</pre></td>
-        </tr>
-        <tr class="inferred">
-          <td><pre><a name="line54">54</a>       end</pre></td>
-        </tr>
-        <tr class="inferred">
-          <td><pre><a name="line55">55</a> </pre></td>
+          <td><pre><a name="line41">41</a>       def filter_user(query)</pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line56">56</a>       def user_hash(user)</pre></td>
-        </tr>
-        <tr class="uncovered">
-          <td><pre><a name="line57">57</a>         { id: user.id, name: &quot;#{user.firstname} #{user.lastname}&quot; }</pre></td>
+          <td><pre><a name="line42">42</a>         return query unless user_id</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line58">58</a>       end</pre></td>
-        </tr>
-        <tr class="inferred">
-          <td><pre><a name="line59">59</a> </pre></td>
+          <td><pre><a name="line43">43</a> </pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line60">60</a>       def preloaded_movies</pre></td>
-        </tr>
-        <tr class="uncovered">
-          <td><pre><a name="line61">61</a>         @preloaded_movies ||= Movie.where(id: results.map(&amp;:movie_id))</pre></td>
+          <td><pre><a name="line44">44</a>         query.where(user_id:)</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line62">62</a>                                    .includes(:user)</pre></td>
+          <td><pre><a name="line45">45</a>       end</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line63">63</a>                                    .each_with_object({}) do |movie, hash|</pre></td>
-        </tr>
-        <tr class="uncovered">
-          <td><pre><a name="line64">64</a>                                      hash[movie.id] = {</pre></td>
-        </tr>
-        <tr class="inferred">
-          <td><pre><a name="line65">65</a>                                        title: movie.title,</pre></td>
-        </tr>
-        <tr class="inferred">
-          <td><pre><a name="line66">66</a>                                        description: movie.description,</pre></td>
-        </tr>
-        <tr class="inferred">
-          <td><pre><a name="line67">67</a>                                        created_days_ago: created_days_ago(movie.created_at),</pre></td>
-        </tr>
-        <tr class="inferred">
-          <td><pre><a name="line68">68</a>                                        user: user_hash(movie.user)</pre></td>
-        </tr>
-        <tr class="inferred">
-          <td><pre><a name="line69">69</a>                                      }</pre></td>
-        </tr>
-        <tr class="inferred">
-          <td><pre><a name="line70">70</a>                                    end</pre></td>
-        </tr>
-        <tr class="inferred">
-          <td><pre><a name="line71">71</a>       end</pre></td>
-        </tr>
-        <tr class="inferred">
-          <td><pre><a name="line72">72</a> </pre></td>
+          <td><pre><a name="line46">46</a> </pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line73">73</a>       def data</pre></td>
-        </tr>
-        <tr class="inferred">
-          <td><pre><a name="line74">74</a>         {</pre></td>
-        </tr>
-        <tr class="uncovered">
-          <td><pre><a name="line75">75</a>           data: results.map do |result|</pre></td>
-        </tr>
-        <tr class="uncovered">
-          <td><pre><a name="line76">76</a>             preloaded_movies[result.movie_id].merge(</pre></td>
-        </tr>
-        <tr class="inferred">
-          <td><pre><a name="line77">77</a>               likes_count: result.likes_count,</pre></td>
-        </tr>
-        <tr class="inferred">
-          <td><pre><a name="line78">78</a>               hates_count: result.hates_count</pre></td>
-        </tr>
-        <tr class="inferred">
-          <td><pre><a name="line79">79</a>             )</pre></td>
-        </tr>
-        <tr class="inferred">
-          <td><pre><a name="line80">80</a>           end</pre></td>
-        </tr>
-        <tr class="inferred">
-          <td><pre><a name="line81">81</a>         }</pre></td>
-        </tr>
-        <tr class="inferred">
-          <td><pre><a name="line82">82</a>       end</pre></td>
-        </tr>
-        <tr class="inferred">
-          <td><pre><a name="line83">83</a> </pre></td>
+          <td><pre><a name="line47">47</a>       def order(query)</pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line84">84</a>       def total_records_number</pre></td>
-        </tr>
-        <tr class="uncovered">
-          <td><pre><a name="line85">85</a>         results.first.total_count</pre></td>
+          <td><pre><a name="line48">48</a>         return query unless sort_by</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line86">86</a>       end</pre></td>
-        </tr>
-        <tr class="inferred">
-          <td><pre><a name="line87">87</a> </pre></td>
+          <td><pre><a name="line49">49</a> </pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line88">88</a>       def pagination</pre></td>
-        </tr>
-        <tr class="uncovered">
-          <td><pre><a name="line89">89</a>         { page:, per_page: [ limit.to_i, total_records_number ].min }</pre></td>
+          <td><pre><a name="line50">50</a>         query.order(&quot;#{sort_by} #{sort_order || &#39;DESC&#39;}&quot;)</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line90">90</a>       end</pre></td>
+          <td><pre><a name="line51">51</a>       end</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line91">91</a> </pre></td>
+          <td><pre><a name="line52">52</a> </pre></td>
         </tr>
         <tr class="marked">
-          <td><pre><a name="line92">92</a>       def total_records</pre></td>
+          <td><pre><a name="line53">53</a>       def results</pre></td>
         </tr>
-        <tr class="uncovered">
-          <td><pre><a name="line93">93</a>         { total_records: total_records_number }</pre></td>
-        </tr>
-        <tr class="inferred">
-          <td><pre><a name="line94">94</a>       end</pre></td>
+        <tr class="marked">
+          <td><pre><a name="line54">54</a>         @results ||= filter_user order base_query</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line95">95</a>     end</pre></td>
+          <td><pre><a name="line55">55</a>       end</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line96">96</a>   end</pre></td>
+          <td><pre><a name="line56">56</a> </pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line57">57</a>       def user_hash(user)</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line58">58</a>         { id: user.id, name: &quot;#{user.firstname} #{user.lastname}&quot; }</pre></td>
         </tr>
         <tr class="inferred">
-          <td><pre><a name="line97">97</a> end</pre></td>
+          <td><pre><a name="line59">59</a>       end</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line60">60</a> </pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line61">61</a>       def preloaded_movies</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line62">62</a>         @preloaded_movies ||= Movie.where(id: results.map(&amp;:movie_id))</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line63">63</a>                                    .includes(:user)</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line64">64</a>                                    .each_with_object({}) do |movie, hash|</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line65">65</a>                                      current_user_vote = movie.vote_from(current_user_id)</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line66">66</a> </pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line67">67</a>                                      hash[movie.id] = {</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line68">68</a>                                        id: movie.id,</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line69">69</a>                                        title: movie.title,</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line70">70</a>                                        description: movie.description,</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line71">71</a>                                        created_days_ago: movie.created_days_ago,</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line72">72</a>                                        user: user_hash(movie.user),</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line73">73</a>                                        vote_id: current_user_vote&amp;.id,</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line74">74</a>                                        liked: current_user_vote&amp;.like? || false,</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line75">75</a>                                        hated: current_user_vote&amp;.hate? || false</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line76">76</a>                                      }</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line77">77</a>                                    end</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line78">78</a>       end</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line79">79</a> </pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line80">80</a>       def data</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line81">81</a>         {</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line82">82</a>           data: results.map do |result|</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line83">83</a>             preloaded_movies[result.movie_id].merge(</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line84">84</a>               likes_count: result.likes_count,</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line85">85</a>               hates_count: result.hates_count</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line86">86</a>             )</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line87">87</a>           end</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line88">88</a>         }</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line89">89</a>       end</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line90">90</a> </pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line91">91</a>       def total_records_number</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line92">92</a>         results&amp;.first&amp;.total_count || 0</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line93">93</a>       end</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line94">94</a> </pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line95">95</a>       def pagination</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line96">96</a>         { page:, per_page: [ limit.to_i, total_records_number || 0 ].min }</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line97">97</a>       end</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line98">98</a> </pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line99">99</a>       def total_records</pre></td>
+        </tr>
+        <tr class="marked">
+          <td><pre><a name="line100">100</a>         { total_records: total_records_number }</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line101">101</a>       end</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line102">102</a>     end</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line103">103</a>   end</pre></td>
+        </tr>
+        <tr class="inferred">
+          <td><pre><a name="line104">104</a> end</pre></td>
         </tr>
       </tbody>
     </table>
 
-    <p>Generated on 2025-02-20 02:05:52 +0200 with <a href="https://github.com/fguillen/simplecov-rcov">SimpleCov-RCov 0.2.3</a></p>
+    <p>Generated on 2025-02-27 18:48:44 +0200 with <a href="https://github.com/fguillen/simplecov-rcov">SimpleCov-RCov 0.2.3</a></p>
 
   </body>
 </html>
