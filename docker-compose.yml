@@ -1,0 +1,89 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:15
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: kaiti
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: movie_rama_development
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+
+  app:
+    build: .
+    restart: always
+    container_name: rails_app
+    depends_on:
+      - db
+    environment:
+      RAILS_ENV: development
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+    stdin_open: true
+    tty: true
+
+  solid_queue:
+    build: .
+    restart: always
+    container_name: solid_queue_worker
+    depends_on:
+      - db
+    entrypoint: ["bin/rails", "solid_queue:start"]
+    environment:
+      - RAILS_ENV=development
+    volumes:
+      - ./app:/app
+
+  test:
+    build: .
+    container_name: rails_test
+    volumes:
+      # - .:/app
+      - coverage:/app/coverage
+    environment:
+      RAILS_ENV: test
+    depends_on:
+      - db
+    command: >
+      sh -c "bundle exec rake rswag:specs:swaggerize && bundle exec rspec"
+    # command: rspec
+    # entrypoint: ["bundle", "exec", "rspec"]
+
+  # test:
+  #   build: .
+  #   container_name: rails_test
+  #   volumes:
+  #     - .:/app
+  #   environment:
+  #     RAILS_ENV: test
+  #   depends_on:
+  #     - db
+  #   command: bundle exec rspec --format documentation --out coverage/index.html
+
+  coverage:
+    image: nginx:alpine
+    container_name: coverage_server
+    volumes:
+      - ./coverage:/usr/share/nginx/html:ro
+    ports:
+      - "8080:80"
+    depends_on:
+      - app
+
+volumes:
+  postgres_data:
+  coverage:
+
