@@ -23,5 +23,15 @@ module MovieRama
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    # config.active_job.queue_adapter = :solid_queue
+    # config.solid_queue.connects_to = { database: { writing: :queue } }
+
+    config.generators do |g|
+      g.test_framework :rspec,
+                       helper_specs: false,
+                       routing_specs: false,
+                       controller_specs: false
+    end
   end
 end
